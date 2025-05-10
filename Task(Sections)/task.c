@@ -101,20 +101,39 @@ int main(int argc , char *argv[])
     /*3*/
     /*RUN PROCESSES*/
     void  runSpecificProcess(){
-    printf("please enter the process command");
+    printf("Please enter the command for the process to run: ");
     fgets(command, sizeof(command), stdin);
-    strcat(command, " &");
-    runTheCommand(command, 150);
+    command[strcspn(command, "\n")] = '\0'; // Remove trailing newline
+
+    if (strlen(command) == 0) {
+        printf("No command entered.\n");
+        return;
     }
+
+    // Check if '&' is already there, to avoid "command & &"
+    if (strlen(command) > 0 && command[strlen(command)-1] != '&') {
+         strcat(command, " &");
+         runTheCommand(command, 150);
+    } else if (strlen(command) == 0 && command[strlen(command)-1] == '&') {
+        // User just typed "&", which is not a valid command start
+        printf("Invalid command.\n");
+        return;
+    }
+
+    
+    printf("Attempted to launch '%s'.\n", command); // Removed 'in the background' as it might already be there
+}
 
     /*4*/
     /*STOP PROCESSES*/
     void  stopSpecificProcess(){
     listAllTheProcessesInTheSystem();
     //get the process id
-    char id[20];
-    printf("\n Please Enter the process ID you want to stop it :");
-    fgets(id, sizeof(id), stdin);
+   char id_input[20];
+    printf("Enter the process ID: ");
+    fgets(id_input, sizeof(id_input), stdin);
+    id_input[strcspn(id_input, "\n")] = '\0'; // remove newline
+     int id = atoi(id_input);
     //set command line
     //strcpy(command, "kill ");
     kill(id, SIGSTOP);
