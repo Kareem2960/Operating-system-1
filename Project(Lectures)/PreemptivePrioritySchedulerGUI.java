@@ -114,15 +114,40 @@ public class PreemptivePrioritySchedulerGUI extends JFrame {
         ganttChartArea.setText("");
     }
 
+    private boolean validateInputs() {
+        int n = processModel.getRowCount();
+        for (int i = 0; i < n; i++) {
+            for (int j = 1; j <= 3; j++) { // Only check arrival, burst, priority
+                Object value = processModel.getValueAt(i, j);
+                if (value == null || value.toString().trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "All fields must be filled for every process.");
+                    return false;
+                }
+                try {
+                    int v = Integer.parseInt(value.toString());
+                    if (v < 0) {
+                        JOptionPane.showMessageDialog(this, "No negative numbers allowed (row " + (i+1) + ").");
+                        return false;
+                    }
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(this, "Only non-negative integers are allowed (row " + (i+1) + ").");
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     private void simulate() {
         try {
+            // Validate input
+            if (!validateInputs()) return;
             // Get processes from table
             int n = processModel.getRowCount();
             if (n == 0) {
                 JOptionPane.showMessageDialog(this, "Please add at least one process.");
                 return;
             }
-
             Process[] processes = new Process[n];
             for (int i = 0; i < n; i++) {
                 int id = (int) processModel.getValueAt(i, 0);
