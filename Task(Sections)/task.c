@@ -37,7 +37,7 @@ int main(int argc , char *argv[])
     4.stop proccesses
     5.Send specific signals to specific process
     6.EXIT*/
-    printf("\t1.List all the process with the ID\n\t2.List all the processes grouped by user\n\t3.run proccesses\n\t4.stop proccesses\n\t5.Send specific signals to specific process\n\t6.EXIT\n");
+    printf("\t1.List all the process \n\t2.List all the processes grouped by user\n\t3.run proccesses\n\t4.stop proccesses\n\t5.Send specific signals to specific process\n\t6.Display proccess ID\n\t7.EXIT\n");
     scanf(" %d",&choise);
     t = getchar();
 
@@ -59,6 +59,9 @@ int main(int argc , char *argv[])
         sendSpecificSignalsToSpecificProcess();
         break;
     case 6:
+        listAllTheProcessesInTheSystem();
+        break;
+    case 7:
         printf("we hope you have found what are you looking for.");
         exit(0);
     default:
