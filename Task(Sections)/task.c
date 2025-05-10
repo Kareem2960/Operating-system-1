@@ -100,6 +100,7 @@ int main(int argc , char *argv[])
     void  runSpecificProcess(){
     printf("please enter the process command");
     fgets(command, sizeof(command), stdin);
+    strcat(command, " &");
     runTheCommand(command, 150);
     }
 
@@ -112,9 +113,10 @@ int main(int argc , char *argv[])
     printf("\n Please Enter the process ID you want to stop it :");
     fgets(id, sizeof(id), stdin);
     //set command line
-    strcpy(command, "kill ");
-    strcat(command,id);
-    runTheCommand(command, 150);
+    //strcpy(command, "kill ");
+    kill(id, SIGSTOP);
+   // strcat(command,id);
+    //runTheCommand(command, 150);
     }
 
     /*5*/
@@ -123,8 +125,8 @@ int main(int argc , char *argv[])
     //specify the signal
     int signalnum;
     printf("choose a signal from the following list :");
-    printf("\n\t1.SIGKILL\n\t2.SIGSTOP\n\t3.SIGCONT\n\t4.SIGTERM\n");
-if (scanf("%d", &signalnum) != 1) {
+    printf("\n\t1.SIGQUIT\n\t2.SIGUSR1\n\t3.SIGCONT\n\t4.SIGTERM\n");
+    if (scanf("%d", &signalnum) != 1) {
         printf("Invalid input. Please enter a number.\n");
         while (getchar() != '\n'); // Clear input buffer
         return;
@@ -143,10 +145,10 @@ if (scanf("%d", &signalnum) != 1) {
     int signal;
     switch(signalnum) {
         case 1:
-          signal = SIGKILL;
+          signal = SIGQUIT;
          break;
         case 2: 
-          signal = SIGSTOP; 
+          signal = SIGUSR1; 
           break;
         case 3: 
           signal = SIGCONT; 
